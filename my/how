@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# how get size of directory
+alias lls="du -ah --max-depth 1"
+
+
+
+
