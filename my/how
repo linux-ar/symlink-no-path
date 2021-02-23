@@ -13,3 +13,23 @@ sshfs anything@192.168.1.109:/data/data/com.termux/files/home/  $HOME/termux -p 
 
 unzip
 http://github.com/maxim-saplin/NetCoreStorageSpeedTest/releases/download/2.0.2-u/CPDT_Linux.zip
+
+#how set sleep for copy 
+#if server limte disk I/O
+for d in 44/*; do cp -R  "$d" 55/; sleep 122;done
+for d in 44/*; do cp -R  "$d" 55/; sleep 122;done
+for d in drive/MyDrive/myVideo/14apps/*;do cp -R "$d" drive/MyDrive/myVideo/SMP2/14apps/ ; sleep 122;done
+
+copy() {
+    local arg from to
+    while getopts 'f:t:' arg
+    do
+        case ${arg} in
+            f) from=${OPTARG};;
+            t) to=${OPTARG};;
+            *) return 1 # illegal option
+        esac
+    done
+}
+
+copy -f /tmp/a -t /tmp/b
