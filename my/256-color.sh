@@ -1,3 +1,4 @@
+#!/bin/bash
 for code in {0..255};
 do 
 echo \
