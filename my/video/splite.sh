@@ -18,41 +18,42 @@ endVideo=$4
 # ffmpeg -ss $startVideo -i $input  -t $endVideo -c:a copy $output -y
 # work better and compress very sall
 # ffmpeg 
-# 	\	-y
-# 	\	-ss $startVideo 
-# 	\	-i $input  
-# 	\	-t $endVideo  
-# 	\	-vcodec libx265 
-# 	\	-crf 30 
+#     \    -y
+#     \    -ss $startVideo 
+#     \    -i $input  
+#     \    -t $endVideo  
+#     \    -vcodec libx265 
+#     \    -crf 30 
 #     \    $output 
 
-# ffmpeg 	\
-# 	-y	\
+# ffmpeg     \
+#     -y    \
 #     -hide_banner \
-# 	-ss $startVideo 	\
-# 	-i $input  	\
-# 	-vcodec libx265 	\
-# 	-crf 30 	\
-# 	-b: 500k 	\
+#     -ss $startVideo     \
+#     -i $input      \
+#     -vcodec libx265     \
+#     -crf 30     \
+#     -b: 500k     \
 #     -threads 8 \
-#     $output 	
-#     # -t $endVideo  	\
-#     # -vsync vfr 	\
+#     $output     
+#     # -t $endVideo      \
+#     # -vsync vfr     \
 
 
-ffmpeg 	\
-	-y	\
-	-ss $startVideo 	\
-	-i $input  	\
-	-b: 500k 	\
-    -threads 8 \
-    -vcodec libstagefright_h264 \
-	-crf 26	\
-    $output 	
-    # -t $endVideo  	\
-	# --disable-asm	\
-    # -vsync vfr 	\
-	# -preset ultrafast 	\
+ffmpeg                              \
+    -y                              \
+    -ss $startVideo                 \
+    -i $input                       \
+    -b: 500k                        \
+    -threads 8                      \
+    -vcodec libstagefright_h264     \
+    -crf 26                         \
+    -t $endVideo                    \
+    $output     
+
+    # --disable-asm    \
+    # -vsync vfr     \
+    # -preset ultrafast     \
 
 # -i  input file
 # -ss start time in seconds or in hh:mm:ss
@@ -62,11 +63,11 @@ ffmpeg 	\
 ##
 
 # for remove acc mp licence
-# ffmpeg 	\
-# 	-y	\
-#     -i $input  	\
-# 	-c:v copy 	\
-#     $output 	
+# ffmpeg     \
+#     -y    \
+#     -i $input      \
+#     -c:v copy     \
+#     $output     
 
 
 # indevs
