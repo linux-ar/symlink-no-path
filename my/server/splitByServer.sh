@@ -12,6 +12,6 @@ echo "retourn to server .sh"
 
 
 
-scp  -i ~/.ssh/id_rsa vps@40.86.167.128:/home/vps/vid/vps-output.mp4 $HOME/
-# termux-open --send $HOME/vps-output.mp4
+scp  -i ~/.ssh/id_rsa vps@40.86.167.128:/home/vps/vid/vps-output.mp4 $HOME/storage/movies/
+termux-open --send $HOME/storage/movies/vps-output.mp4
 
