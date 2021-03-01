@@ -2,15 +2,13 @@
 sudo rm $HOME/vps-output.mp4 >/dev/null 2>&1
 # endVideo use -t not -to
 # c-a-d lenght of cut
-echo "in server.sh $URL $STARTVIDEO $ENDVIDEO"
-echo "starting ssh"
 
 
 # URL="https://youtu.be/-bfbtaZ6VXc"
 # STARTVIDEO=33
 # ENDVIDEO=44
-ssh -i ~/.ssh/id_rsa  vps@40.86.167.128 "bash -s" < $HOME/cc.sh $URL $STARTVIDEO $ENDVIDEO
-echo "retourn to server .sh"
+ssh -i ~/.ssh/id_rsa  vps@40.86.167.128 "bash -s" < $HOME/scripts/my/server/exec-in-server.sh $URL $STARTVIDEO $ENDVIDEO
+echo "retourn to server .sh" 
 
 
 

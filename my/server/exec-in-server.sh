@@ -8,13 +8,18 @@ output="$HOME/vid/vps-output.mp4"
 url="$1"
 startvideo=$2
 endvideo=$3
-echo "... load cc.sh"
-echo "in cc.sh $url $startvideo $endvideo ..." >> work.txt
 sudo rm $HOME/vid/vps.mp4 >/dev/null 2>&1
 sudo rm $HOME/vid/vps.mp4.mkv >/dev/null 2>&1
 sudo rm $HOME/vid/vps-output.mp4 >/dev/null 2>&1
 
-youtube-dl -f 'bestvideo[height<=480]+bestaudio/best[height<=480]' -o '$HOME/vid/vps.mp4' $url
+youtube-dl \
+    -f 'bestvideo[height<=480]+bestaudio/best[height<=480]' \
+    -o "$HOME/vid/vps.mp4"                                  \
+    $url                                                    
+    
+                                              # >/dev/null 2>&1
+    
+# youtube-dl -f 'bestvideo[height<=480]+bestaudio/best[height<=480]' -o '$HOME/vid/vps.mp4' $url  >/dev/null 2>&1
 
 # # i'm using this comm1nd for rename outpul of youtube-dl
 mv $HOME/vid/vps.mp4.mkv $HOME/vid/vps.mp4 >/dev/null 2>&1
@@ -27,6 +32,7 @@ ffmpeg                              \
     -crf 26                         \
     $output                         \
     -y                              \
+                      >/dev/null 2>&1
 
 # #     # --disable-asm    \
 # #     # -vsync vfr     \
