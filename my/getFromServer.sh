@@ -1,4 +1,4 @@
-#!/bin/bash/
+#!/data/data/com.termux/files/usr/bin/zsh
 #copy vps/home/file.txt termux/home/
 host="$1"
 file="$2"
