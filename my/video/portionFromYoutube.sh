@@ -3,7 +3,7 @@ url=$(youtube-dl --youtube-skip-dash-manifest -g $URLP)
 video_url=$(echo -e $url |sed -n '1 p')
 audio_url=$(echo -e $url |sed -n '2 p')
 retard_time=0
-rand=$(openssl rand -base64 9 | cut -c -7)
+rand=$(openssl rand -base64 9 | cut -c -6)
 $rand=$(echo $rand | sed  's/[^a-zA-Z]//g')
 # because input sometime is string 0:04:30
 # if [[ $STARTVIDEOP -gt 30 ]]; then
