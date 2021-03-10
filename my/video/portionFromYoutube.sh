@@ -3,11 +3,14 @@ url=$(youtube-dl --youtube-skip-dash-manifest -g $URLP)
 video_url=$(echo -e $url |sed -n '1 p')
 audio_url=$(echo -e $url |sed -n '2 p')
 retard_time=0
-if [[ $STARTVIDEOP -gt 30 ]]; then
-    $STARTVIDEOP=$(($STARTVIDEOP-30)) 
-    $ENDVIDEOP=$(($ENDVIDEOP-30))
-    retard_time=30
-fi
+rand=$(openssl rand -base64 9 | cut -c -7)
+$rand=$(echo $rand | sed  's/[^a-zA-Z]//g')
+# because input sometime is string 0:04:30
+# if [[ $STARTVIDEOP -gt 30 ]]; then
+#     $STARTVIDEOP=$(($STARTVIDEOP-30)) 
+#     $ENDVIDEOP=$(($ENDVIDEOP-30))
+#     retard_time=30
+# fi
 
 ffmpeg                        \
     -y                        \
@@ -21,7 +24,7 @@ ffmpeg                        \
     -t "$ENDVIDEOP"           \
     -c:v libx264              \
     -c:a aac                  \
-    $HOME/storage/movies/vps-output.mp4
+    $HOME/storage/movies/vps-output-$rand.mp4
 
 
 
