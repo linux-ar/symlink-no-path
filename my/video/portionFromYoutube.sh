@@ -20,7 +20,7 @@ ffmpeg                              \
     -map 0:v                        \
     -map 1:a                        \
     -ss "$retard_time"              \
-    -t "$ENDVIDEOP"                 \
+    -to "$ENDVIDEOP"                 \
     -b: 500k                        \
     -threads 8                      \
     -crf 18                         \
