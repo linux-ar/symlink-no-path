@@ -13,20 +13,19 @@ rand=$(openssl rand -base64 48 | sed 's/[^a-z]//g'|sed 's/^\(......\).*/\1/')
 
 ffmpeg                              \
     -y                              \
-    -ss "$STARTVIDEOP"              \
-    -i  "$video_url"                \
-    -ss "$STARTVIDEOP"              \
-    -i  "$audio_url"                \
+    -ss "${STARTVIDEOP}"            \
+    -i  "${video_url}"              \
+    -ss "${STARTVIDEOP}"            \
+    -i  "${audio_url}"              \
     -map 0:v                        \
     -map 1:a                        \
-    -ss "$retard_time"              \
-    -to "$ENDVIDEOP"                 \
-    -b: 500k                        \
+    -ss "${retard_time}"            \
+    -t "${ENDVIDEOP}"              \
     -threads 8                      \
     -crf 18                         \
     -vsync vfr                      \
     -preset ultrafast               \
-    $HOME/storage/movies/vps-output-$rand.mp4
+    ${HOME}/storage/movies/vps-output-${rand}.mp4
 
     # -c copy                   \
     # -c:v libx264              \
