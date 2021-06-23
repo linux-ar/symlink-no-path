@@ -44,3 +44,10 @@ touch aa{1..4}.txt
 git add .
 git commit -m 'init project'
 git push -u local master
+
+
+# how to kill .sh 
+# $(...) <== id of pid
+# awk grep name by ps -ef
+# awk nr==1 <== because we have tow resulat , you must remove seconde that create by awk
+kill -9 $(ps -ef|awk  '/ayoubStatusBar/{print $2}'|awk 'NR==1')
