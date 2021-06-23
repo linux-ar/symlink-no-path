@@ -33,3 +33,14 @@ copy() {
 }
 
 copy -f /tmp/a -t /tmp/b
+
+# git locally
+mkdir /path/to/backup && cd $_ # meen cd to dir2
+git init --bare
+mkdir /path/to/origin
+git init
+git remote add local /path/to/backup
+touch aa{1..4}.txt
+git add .
+git commit -m 'init project'
+git push -u local master

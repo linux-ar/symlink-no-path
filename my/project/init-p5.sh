@@ -1,6 +1,7 @@
 #!/bin/bash
 title="$2"
-cd "/data/data/com.termux/files/home/storage/downloads/yyy/p5.js/"
+# cd "/data/data/com.termux/files/home/storage/downloads/yyy/p5.js/"
+cd "/opt/P5.JS"
 mkdir $1
 cd $1
 touch index.html
@@ -13,7 +14,7 @@ echo "<!DOCTYPE html>" >> index.html
 echo "<html>" >> index.html
 echo 
 echo "<head>" >> index.html
-echo "  <script src=\"file:///storage/emulated/0/Download/yyy/p5.js/lib/p5.js\"></script>" >> index.html
+echo "  <script src=\"/opt/P5.JS/Library/p5.js\"></script>" >> index.html
 echo "<link rel=\"stylesheet\" href=\"style.css\">" >> index.html
 echo "  <meta charset=\"utf-8\" />" >> index.html
 echo "  <title>$title</title>" >> index.html
