@@ -8,9 +8,9 @@ while true;do
   date="$(date +%a\ %d\ %b\ %H:%M:%S)"
   ram="$(free -m | awk 'NR==2 { print $3 }') MB"
 
-  [[ ! $(du -b /tmp/chrono|awk '{print $1}') -eq 1 ]] && chrono="| $(cat /tmp/chrono)"
+  [[ ! $(du -b /tmp/chrono|awk '{print $1}') -eq 1 ]] && chrono="| $(cat /tmp/chrono) " || chrono=""
 
-  statusbar="${chrono} | ${battrie} | ${ram} | ${date}" 
+  statusbar="${chrono}| ${battrie} | ${ram} | ${date}" 
   exec xsetroot -name "$statusbar"&
   sleep 1
 done
