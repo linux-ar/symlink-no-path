@@ -6,7 +6,7 @@ while true;do
   battrie="$(cat /sys/class/power_supply/axp288_fuel_gauge/capacity)% ${bateryFlag}"
 
   date="$(date +%a\ %d\ %b\ %H:%M:%S)"
-  ram="$(free -m | awk 'NR==2 { print $3 }') MB"
+  ram="$(free -m | awk 'NR==2 { print $3+$5 }') MB"
 
   [[ ! $(du -b /tmp/chrono|awk '{print $1}') -eq 1 ]] && chrono="| $(cat /tmp/chrono) " || chrono=""
 
