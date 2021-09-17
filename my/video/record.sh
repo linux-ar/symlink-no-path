@@ -1,27 +1,21 @@
 #!/bin/bash
 
-# ffmpeg \
-# 	-f x11grab \
-# 	-y \
-# 	-video_size 1280x800 \
-# 	-i \
-# 	-f alsa \
-#   -i default \
-# 	-c:v libx264 \
-#   -r 30 \
-# 	-c:a flac\
-# 	$filename
+#TODO: refactor /tmp/chrono to /tmp/record
 tmpPID="/tmp/screencast.pid"
 outputDir="$HOME/screencast"
 timeStamp=$(date "+%Y%m%d_%H%M%S")
 filename="${outputDir}/${timeStamp}.mkv"
+#TODO: if ffmpeg not run , by kill with external command , you must start recording
 
 if [ -s $tmpPID ]
 then
   kill $(cat $tmpPID)
   rm -f $tmpPID
+  #TODO: use sed to remode line "recording..."
+  echo "" > /tmp/chrono
+  kill_loop=false
+  # pkill record.sh || echo
 else
-  echo " recording... " > /tmp/chrono
   ffmpeg \
     -f x11grab            \
     -y                    \
@@ -34,6 +28,7 @@ else
     -pix_fmt yuv444p      \
     $filename             \
     & echo $! > $tmpPID
+  #TODO: use another script to write "recording. recording.. recording..." in /tmp/chono
+  echo " recording... " > /tmp/chrono
 fi
 
-echo "" > /tmp/chrono

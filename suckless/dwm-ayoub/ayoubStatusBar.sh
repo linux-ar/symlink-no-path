@@ -13,6 +13,6 @@ while true;do
 
   # statusbar="| ${learn} ${chrono}| ${battrie} | ${ram} | ${date}" 
   statusbar="${chrono}| ${battrie} | ${ram} | ${date}" 
-  exec xsetroot -name "$statusbar"&
+  exec xsetroot -name "$statusbar" &
   sleep 1
 done
