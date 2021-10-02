@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# XDEP_SYNC="${XDEP_SYNC-0}"
+# XDEP_SYNC="$1"
+XDEP_SYNC="0"
+
+if [ "${XDEP_SYNC}" != 0 ]; then
+    # xlocate -S
+    echo "download"
+
+
+    mkdir -p Contents
+
+    cat sources | while read -r line; do
+        set -- ${line}
+        repo="${1}"; shift
+        arch="${1}"; shift
+        dist="${1}"; shift
+
+        for arg in "${@}"; do
+            # curl "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz" | gunzip -c > "Contents/${arg}"
+            echo "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz arg=${arg}" >> tt.txt
+        done
+    done
+fi
+
+# Craft pattern instead of looping over arguments (improves performance significantly)
+pattern="$(rg -I "$(echo "${@}" | tr ' ' '\n' | awk 'NR > 1 { printf "|" } { printf "/%s$",$1 }')" Contents | awk 'NR > 1 { printf "\\|" } { printf "/%s",$1 }')"
+echo "$pattern"
+
+echo "found files, now reversing dependencies (this might take a while)" 1>&2
+
+[ -z "${pattern}" ] && exit 1
+git -c grep.lineNumber=false --git-dir="${XDG_CACHE_HOME}/xlocate.git" grep -- "${pattern}" @ | awk -F: '{print $2}' | sort -u
+
