@@ -1,35 +1,48 @@
 #!/bin/sh
 
 # XDEP_SYNC="${XDEP_SYNC-0}"
-# XDEP_SYNC="$1"
 XDEP_SYNC="0"
+XDG_CACHE_HOME="$HOME/.cache"
+sources="http://ftp.debian.org/debian  amd64 testing  main contrib non-free"
+contents="$HOME/.cache/ubuntu-Contents"
+
+
+
+#sync xlocate
+if [ -f "$XLOCATE_GIT/refs/heads/master" ]; then
+	BASE="$XLOCATE_GIT/refs/heads/master"
+elif [ -f "$XLOCATE_GIT/FETCH_HEAD" ]; then
+	BASE="$XLOCATE_GIT/FETCH_HEAD"
+fi
+if [ -z "$BASE" ] || find /var/db/xbps/ -name '*repodata' -newer "$BASE" | grep -q .; then
+	if grep -q origin "$XLOCATE_GIT/config"; then
+    xlocate -S
+	else
+    xlocate -g
+	fi
+fi
+
+
+# fetch source from debian
+mkdir -p  $contents
 
 if [ "${XDEP_SYNC}" != 0 ]; then
-    # xlocate -S
-    echo "download"
+   echo "$sources" | while read -r line; do
+    set -- ${line}
+    repo="${1}"; shift
+    arch="${1}"; shift
+    dist="${1}"; shift
 
-
-    mkdir -p Contents
-
-    cat sources | while read -r line; do
-        set -- ${line}
-        repo="${1}"; shift
-        arch="${1}"; shift
-        dist="${1}"; shift
-
-        for arg in "${@}"; do
-            # curl "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz" | gunzip -c > "Contents/${arg}"
-            echo "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz arg=${arg}" >> tt.txt
-        done
+    for arg in "${@}"; do
+        # curl "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz" | gunzip -c > "$contents/${arg}"
+        echo "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz arg=${arg}" 
     done
+  done
 fi
 
 # Craft pattern instead of looping over arguments (improves performance significantly)
-pattern="$(rg -I "$(echo "${@}" | tr ' ' '\n' | awk 'NR > 1 { printf "|" } { printf "/%s$",$1 }')" Contents | awk 'NR > 1 { printf "\\|" } { printf "/%s",$1 }')"
-echo "$pattern"
+pattern="$(rg -I "$(echo "${@}" | tr ' ' '\n' | awk 'NR > 1 { printf "|" } { printf "/%s$","curl" }')" ~/scripts/my/xbps/Contents | awk 'NR > 1 { printf "\\|" } { printf "/%s",$1 }')"
+[ -z "${pattern}" ] && echo -e "dependencies not found \n" ; exit 1
+echo "found dependencies, but might take a while" 1>&2
 
-echo "found files, now reversing dependencies (this might take a while)" 1>&2
-
-[ -z "${pattern}" ] && exit 1
 git -c grep.lineNumber=false --git-dir="${XDG_CACHE_HOME}/xlocate.git" grep -- "${pattern}" @ | awk -F: '{print $2}' | sort -u
-
