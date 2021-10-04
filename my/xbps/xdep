@@ -1,11 +1,11 @@
 #!/bin/sh
 
 # XDEP_SYNC="${XDEP_SYNC-0}"
-XDEP_SYNC="0"
 XDG_CACHE_HOME="$HOME/.cache"
+XLOCATE_GIT="$XDG_CACHE_HOME/xlocate.git"
 sources="http://ftp.debian.org/debian  amd64 testing  main contrib non-free"
 contents="$HOME/.cache/ubuntu-Contents"
-
+dep="$(echo "$1"|tr '\n' ' ')"
 
 
 #sync xlocate
@@ -14,6 +14,7 @@ if [ -f "$XLOCATE_GIT/refs/heads/master" ]; then
 elif [ -f "$XLOCATE_GIT/FETCH_HEAD" ]; then
 	BASE="$XLOCATE_GIT/FETCH_HEAD"
 fi
+
 if [ -z "$BASE" ] || find /var/db/xbps/ -name '*repodata' -newer "$BASE" | grep -q .; then
 	if grep -q origin "$XLOCATE_GIT/config"; then
     xlocate -S
@@ -26,7 +27,7 @@ fi
 # fetch source from debian
 mkdir -p  $contents
 
-if [ "${XDEP_SYNC}" != 0 ]; then
+if [ ! -f  "$contents/main" ]; then
    echo "$sources" | while read -r line; do
     set -- ${line}
     repo="${1}"; shift
@@ -34,15 +35,16 @@ if [ "${XDEP_SYNC}" != 0 ]; then
     dist="${1}"; shift
 
     for arg in "${@}"; do
-        # curl "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz" | gunzip -c > "$contents/${arg}"
         echo "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz arg=${arg}" 
+        curl "${repo}/dists/${dist}/${arg}/Contents-${arch}.gz" | gunzip -c > "$contents/${arg}"
     done
+    echo "content update"
   done
 fi
 
 # Craft pattern instead of looping over arguments (improves performance significantly)
-pattern="$(rg -I "$(echo "${@}" | tr ' ' '\n' | awk 'NR > 1 { printf "|" } { printf "/%s$","curl" }')" ~/scripts/my/xbps/Contents | awk 'NR > 1 { printf "\\|" } { printf "/%s",$1 }')"
-[ -z "${pattern}" ] && echo -e "dependencies not found \n" ; exit 1
+pattern="$(rg -I "$(echo "${@}" | tr ' ' '\n' | awk 'NR > 1 { printf "|" } { printf "/%s$",$dep }')" ~/scripts/my/xbps/Contents | awk 'NR > 1 { printf "\\|" } { printf "/%s",$1 }')"
+[ -z "${pattern}" ] && { echo -e "dependencies not found \n" ; exit 1;}
 echo "found dependencies, but might take a while" 1>&2
 
 git -c grep.lineNumber=false --git-dir="${XDG_CACHE_HOME}/xlocate.git" grep -- "${pattern}" @ | awk -F: '{print $2}' | sort -u
