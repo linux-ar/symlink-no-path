@@ -17,9 +17,11 @@ fi
 
 if [ -z "$BASE" ] || find /var/db/xbps/ -name '*repodata' -newer "$BASE" | grep -q .; then
 	if grep -q origin "$XLOCATE_GIT/config"; then
-    xlocate -S
+    echo "wait for xlocate -S"
+    # xlocate -S
 	else
-    xlocate -g
+    echo "wait for xlocate -g"
+    # xlocate -g
 	fi
 fi
 
