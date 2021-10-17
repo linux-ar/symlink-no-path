@@ -15,26 +15,31 @@ while true; do
 	ram="$(free -m | awk 'NR==2 { print $2-$7 }') MB"
 
 	[[ ! $(du -b /tmp/chrono | awk '{print $1}') -eq 1 ]] && chrono="\x03 $(cat /tmp/chrono) \x01" || chrono=""
+  # [[ $(cat /tmp/ison) == "on" ]] && chrono="$chrono []" || chrono="$chrono ]["
 
 	statusbar="${chrono}${battrie} | ${ram} | ${date}"
 	exec xsetroot -name "$(echo -e $statusbar)" &
 
 	# clip grep content from clipbroad
+  echo "clip1= $clip"
 	clip="$(xclip -o -sel clip | tr '\n' ' ')"
 	cliptxt="$(cat /tmp/cliptxt)"
 	is_crow="$(cat /tmp/iscro)"
 	is_sh="$(cat /tmp/istrash)"
+	is_on="$(cat /tmp/ison)"
 
 	# - keep only arabic text
 	# - when google block multi connexion for some time , don't use translate.sh
 	# -  TODO: make a timer then use crow again
 
-  echo "clip= $clip"
+  echo "clip2= $clip"
   echo "cliptxt= $cliptxt"
   echo "is_crow= $is_crow"
   echo "is_sh= $is_sh"
+  echo "is_on= $is_on"
 
-	if [[ $clip != $cliptxt  ]]; then
+	if [[ "$clip" != "$cliptxt" && "$is_on" == "on" ]]; then
+    echo "enter:"
     sleep 3
     # on use cat file to check if already google-no-reponse
     # then on use is_error to cheack this tentative it's work or not
