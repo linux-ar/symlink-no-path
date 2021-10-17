@@ -1,0 +1,2 @@
+#!/bin/bash
+exec /opt/app/hyper-3.1.0-canary.6/hyper --no-sandbox

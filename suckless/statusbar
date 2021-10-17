@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#. /root/scripts/suckless/func_statusbar
+echo "start"
+cccc
+bbbb
+echo "end"
+# while true; do
+#   :
+# done
+#echo "$(NOTIFICATION)$(BATRRY) | $(RAM) | $(DATE)"
+# make centre de notification:
+# - make dir /opt/notification/file-{1..100}
+# - any newtification store in one file
+# - make loop for read all notification 
+# - for remove any notification ,i use dmenu to pick file and remove

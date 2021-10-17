@@ -1,0 +1,74 @@
+#!/bin/bash
+
+TOUCH (){
+  touch /tmp/statusbar/notification
+  touch /tmp/statusbar/chrono
+  touch /tmp/statusbar/crow
+  touch /tmp/statusbar/trsh
+
+  touch /tmp/statusbar/clip_from_file
+  touch /tmp/statusbar/is_not_faild
+  touch /tmp/statusbar/is_trans_on
+
+  touch /tmp/statusbar/mail
+  touch /tmp/statusbar/koora
+
+}
+
+BATRRY () {
+  local bateryStatus=""
+  local bateryFlag=""
+  local capacity=""
+  local battry=""
+
+  bateryStatus="$(cat /sys/class/power_supply/axp288_fuel_gauge/status)"
+  [[ $bateryStatus =~ "Discharging" ]] && bateryFlag="y" || bateryFlag="n"
+  capacity="$(cat /sys/class/power_supply/axp288_fuel_gauge/capacity)"
+  battry="${capacity}% ${bateryFlag}"
+  echo "$battry"
+}
+
+DATE (){
+  local date=""
+	date="$(date +%a\ %d\ %b\ %H:%M:%S)"
+  echo "$date"
+}
+
+
+RAM (){
+  local ram=""
+	ram="$(free -m | awk 'NR==2 { print $2-$7 }') MB"
+  echo "$ram"
+}
+
+
+NOTIFICATION (){
+  local notification=""
+  
+	if [[ $(du -b /tmp/notification | awk '{print $1}') -gt 3 ]]; then                       # if empty or chars<3
+    notification="\x03 $(cat /tmp/notification | sed 's/^\(.\{60\}\).*/\1/') \x01"         # limit char in notification in 60 chars
+  else
+    notification="\x03  \x01"
+  fi
+  echo "$notification |"
+}
+
+
+CROW (){
+  local crow=""
+  crow=""
+  echo "$crow"
+
+
+# clip grep content from clipbroad
+	local clip
+	local clip_from_file
+	local is_not_faild
+	local is_trans_on
+
+	clip="$(xclip -o -sel clip | tr '\n' ' ')"
+	clip_from_file="$(cat /tmp/statusbar/clip_from_file)"
+	is_not_faild="$(cat /tmp/statusbar/is_not_faild)"
+	is_trans_on="$(cat /tmp/statusbar/is_trans_on)"
+
+}

@@ -7,7 +7,7 @@ function transtale() {
 
 while true; do
 	bateryStatus="$(cat /sys/class/power_supply/axp288_fuel_gauge/status)"
-	[[ $bateryStatus =~ "Discharging" ]] && bateryFlag="y" || bateryFlag="n"
+	[[ $bateryStatus =~ "Discharging" ]] && bateryFlag="n" || bateryFlag="y"
 	battrie="$(cat /sys/class/power_supply/axp288_fuel_gauge/capacity)% ${bateryFlag}"
 	# learn="  $(shuf -n 1 /mega/repo/wiki/learn.txt)  "
 
