@@ -1,5 +1,5 @@
 #!/bin/bash
 
 
-# lookatme --style one-dark --one "$@" &!
-st -e bash -c "lookatme --style one-dark --one $1" &!
+# st -e bash -c "lookatme --style one-dark --one $1" &!
+lookatme --style one-dark --one "$1"
