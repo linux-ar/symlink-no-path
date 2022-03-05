@@ -1,10 +1,10 @@
 #!/bin/bash
 declare -a pkg=""
 for i in $*;do
-  pkg+="$(cat $@ | grep 'usepackage' | sed -E 's#^.*\{(.*)\}#\1#' | tr '\n' ' ')"
+  pkg+="$(cat $i | grep -v '^%' | grep '\\usepackage'| sed -E 's/\%.*//' | sed -E 's#^.*\{(.*)\}#\1#' | tr '\n' ' ')"
 done
 
-pkg="$(echo $pkg| tr ' ' '\n' | sort| uniq | tr '\n' ' ')"
+pkg="$(echo $pkg| tr '\,' '\n' | tr ' ' '\n' | sort| uniq | tr '\n' ' ')"
 pkg="$(echo $pkg| sed 's/ +/ /g')"
 IFS=', ' read -r -a array <<< "$pkg"
 
@@ -21,6 +21,7 @@ declare -a delete=(
       "lmodern"
       "multicol"
       "tabularx"
+      "tikz"
 )
 for item in ${delete[@]};do
   array=("${array[@]/$item}")
