@@ -1,0 +1,29 @@
+#!/bin/bash
+declare -a pkg=""
+for i in $*;do
+  pkg+="$(cat $@ | grep 'usepackage' | sed -E 's#^.*\{(.*)\}#\1#' | tr '\n' ' ')"
+done
+
+pkg="$(echo $pkg| tr ' ' '\n' | sort| uniq | tr '\n' ' ')"
+IFS=', ' read -r -a array <<< "$pkg"
+
+declare -a delete=(
+      amssymb
+      array
+      fontenc
+      fullpage
+      graphicx
+      hypcap
+      inputenc
+      latexsym
+      lmodern
+      multicol
+      tabularx
+)
+for item in ${delete[@]};do
+  array=("${array[@]/$item}")
+done
+
+echo -e "\n\e[93mtlmgr install \e[95m${array[@]}\e[0m\n"
+
+tlmgr install ${pkg}
