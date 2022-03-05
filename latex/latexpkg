@@ -8,12 +8,13 @@ pkg="$(echo $pkg| tr ' ' '\n' | sort| uniq | tr '\n' ' ')"
 IFS=', ' read -r -a array <<< "$pkg"
 
 declare -a delete=(
+      already
       amssymb
       array
       fontenc
       fullpage
       graphicx
-      hypcap
+      hypcap 
       inputenc
       latexsym
       lmodern
@@ -24,6 +25,20 @@ for item in ${delete[@]};do
   array=("${array[@]/$item}")
 done
 
+declare -a download=(
+      hyperref
+      listings
+      mhchem
+      natbib
+      paralist
+      babel
+      geometry
+      times
+)
+for item in ${download[@]};do
+  array=("${array[@]/$item}")
+done
+
 echo -e "\n\e[93mtlmgr install \e[95m${array[@]}\e[0m\n"
 
-tlmgr install ${pkg}
+[[ ${array} != "" ]] && tlmgr install ${array[@]}
