@@ -5,40 +5,52 @@ for i in $*;do
 done
 
 pkg="$(echo $pkg| tr ' ' '\n' | sort| uniq | tr '\n' ' ')"
+pkg="$(echo $pkg| sed 's/ +/ /g')"
 IFS=', ' read -r -a array <<< "$pkg"
 
 declare -a delete=(
-      already
-      amssymb
-      array
-      fontenc
-      fullpage
-      graphicx
-      hypcap 
-      inputenc
-      latexsym
-      lmodern
-      multicol
-      tabularx
+      "already"
+      "amssymb"
+      "array"
+      "fontenc"
+      "fullpage"
+      "graphicx"
+      "hypcap "
+      "inputenc"
+      "latexsym"
+      "lmodern"
+      "multicol"
+      "tabularx"
 )
 for item in ${delete[@]};do
   array=("${array[@]/$item}")
 done
 
 declare -a download=(
-      hyperref
-      listings
-      mhchem
-      natbib
-      paralist
-      babel
-      geometry
-      times
+      "amsfonts"
+      "amsmath"
+      "babel"
+      "fancyhdr"
+      "geometry"
+      "hyperref"
+      "listings"
+      "mhchem"
+      "multirow"
+      "natbib"
+      "ntheorem"
+      "paralist"
+      "siunitx"
+      "times"
+      "xcolor"
 )
 for item in ${download[@]};do
   array=("${array[@]/$item}")
 done
 
-echo -e "\n\e[93mtlmgr install \e[95m${array[@]}\e[0m\n"
+array1="$(echo ${array[@]} | sed 's/^ *//')"
 
-[[ ${array} != "" ]] && tlmgr install ${array[@]}
+
+if [[ ! -z "${array1}" ]];then
+  echo -e "\n\e[93mtlmgr install \e[95m${array1[@]}\e[0m\n"
+  tlmgr install ${array[@]}
+fi
