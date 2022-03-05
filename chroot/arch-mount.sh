@@ -1,9 +1,15 @@
 #!/bin/bash
-mount --types proc /proc /mnt/arch/proc
-mount --rbind /sys /mnt/arch/sys
-mount --make-rslave /mnt/arch/sys
-mount --rbind /dev /mnt/arch/dev
-mount --make-rslave /mnt/arch/dev 
+isload="$(cat /tmp/isload)"
+if [[ $isload == "y" ]];then
+  echo $isload
+else
+  echo "y" > /tmp/isload
+  mount --types proc /proc /mnt/arch/proc
+  mount --rbind /sys /mnt/arch/sys
+  mount --make-rslave /mnt/arch/sys
+  mount --rbind /dev /mnt/arch/dev
+  mount --make-rslave /mnt/arch/dev 
+fi
 
 chroot /mnt/arch /bin/zsh 
 # source /etc/profile
