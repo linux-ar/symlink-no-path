@@ -28,22 +28,43 @@ for item in ${delete[@]};do
 done
 
 declare -a download=(
+      "adforn"
       "amsfonts"
       "amsmath"
       "babel"
+      "booktabs"
+      "calculator"
+      "caption"
+      "enumitem"
+      "fancybox"
       "fancyhdr"
+      "fontspec"
       "geometry"
       "hyperref"
+      "iftex"
+      "lastpage"
       "listings"
+      "luatextra"
+      "makecell"
+      "mdframed"
       "mhchem"
       "multirow"
       "natbib"
       "ntheorem"
+      "paracol"
       "paralist"
+      "parskip"
+      "pgfplots"
+      "setspace"
       "siunitx"
+      "tcolorbox"
       "times"
+      "titlesec"
+      "titletoc"
+      "wrapfig"
       "xcolor"
 )
+
 for item in ${download[@]};do
   array=("${array[@]/$item}")
 done
