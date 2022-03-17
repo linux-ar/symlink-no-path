@@ -5,6 +5,7 @@ tmpPID="/tmp/screencast.pid"
 outputDir="$HOME/screencast"
 timeStamp=$(date "+%Y%m%d_%H%M%S")
 filename="${outputDir}/${timeStamp}.mkv"
+mkdir -p $outputDir
 #TODO: if ffmpeg not run , by kill with external command , you must start recording
 
 if [ -s $tmpPID ]
