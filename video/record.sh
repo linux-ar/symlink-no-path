@@ -13,10 +13,7 @@ if [ -s $tmpPID ]
 then
   kill $(cat $tmpPID)
   rm -f $tmpPID
-  #TODO: use sed to remode line "recording..."
-  echo "" > "${status}"
-  kill_loop=false
-  # pkill record.sh || echo
+  echo " " > "${status}"
 else
   ffmpeg \
     -f x11grab            \
@@ -30,7 +27,9 @@ else
     -pix_fmt yuv444p      \
     $filename             \
     & echo $! > "$tmpPID"
+
   #TODO: use another script to write "recording. recording.. recording..." in /tmp/chono
-  echo " recording... " > "${status}"
+  bash -c 'echo " ^c#recording... " > "${status}"'
+  # echo ' ^c#FFFF00^recording... ^c' > "${status}"
 fi
 
