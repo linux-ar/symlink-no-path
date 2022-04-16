@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh $(cat ~/.cache/ip) -p 8022
