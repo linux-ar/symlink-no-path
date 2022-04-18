@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# e file1.txt
+
+tmpPID="/tmp/nvim_server.pid"
+PID=$(cat /tmp/nvim_server.pid)
+file="$1"
+PWD=$(pwd)
+
+if ps -p $PID > /dev/null;then
+    echo "server run" > /dev/null
+else
+# if [ ! -s $tmpPID ]; then
+    # kill $(cat $tmpPID)
+    # rm -f $tmpPID
+    # e $@
+    # /tmp/new_tmp/server
+    nvim --headless --listen localhost:6666   & echo $! > "$tmpPID"
+fi
+
+if [[ -f "$file" && $# == 1 ]];then
+    nvim --server localhost:6666 --remote-tab "${PWD}/$file"
+else
+    echo "not exist"
+fi
