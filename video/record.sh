@@ -1,20 +1,25 @@
 #!/bin/bash
 
-#TODO: refactor /tmp/chrono to /tmp/record
-tmpPID="/tmp/screencast.pid"
-outputDir="$HOME/screencast"
+# TODO refactor /tmp/chrono to /tmp/record
+tmpPID="/tmp/screencast.pid"   && touch $tmpPID
+PID=$(cat /tmp/screencast.pid)
+
+outputDir="$HOME/screencast" && mkdir -p $outputDir
+status="/tmp/ayoub/status" && touch "${status}"
+
 timeStamp=$(date "+%Y%m%d_%H%M%S")
 filename="${outputDir}/${timeStamp}.mkv"
-status="/tmp/ayoub/status"
-mkdir -p $outputDir
-#TODO: if ffmpeg not run , by kill with external command , you must start recording
 
-if [ -s $tmpPID ]
-then
-  kill $(cat $tmpPID)
-  rm -f $tmpPID
-  echo " " > "${status}"
+
+if ps -p $PID > /dev/null 2>&1;then
+    echo "in ps"
+    kill $PID
+    echo " " > "${status}"
 else
+    echo "else"
+  # TODO use another script to write "recording. recording.. recording..." in /tmp/chono
+  echo "^c#FFFF00^recording...^c#bbbbbb^" > "$status"
+
   ffmpeg \
     -f x11grab            \
     -y                    \
@@ -28,8 +33,5 @@ else
     $filename             \
     & echo $! > "$tmpPID"
 
-  #TODO: use another script to write "recording. recording.. recording..." in /tmp/chono
-  bash -c 'echo " ^c#recording... " > "${status}"'
-  # echo ' ^c#FFFF00^recording... ^c' > "${status}"
 fi
 
