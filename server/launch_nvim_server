@@ -2,13 +2,14 @@
 
 # e file1.txt
 
-tmpPID="/tmp/nvim_server.pid"
+tmpPID="/tmp/nvim_server.pid" && touch  $tmpPID
 PID=$(cat /tmp/nvim_server.pid)
-file="$1"
 PWD=$(pwd)
-
-if ps -p $PID > /dev/null;then
-    echo "server run" > /dev/null
+file="$1"
+if [[ -z $tmpPID ]];then
+    if ps -p $PID > /dev/null;then
+        echo "server run" > /dev/null
+    fi
 else
 # if [ ! -s $tmpPID ]; then
     # kill $(cat $tmpPID)
@@ -18,7 +19,7 @@ else
     nvim --headless --listen localhost:6666   & echo $! > "$tmpPID"
 fi
 
-if [[ -f "$file" && $# == 1 ]];then
+if [[ -s "$file" && $# == 1 ]];then
     nvim --server localhost:6666 --remote-tab "${PWD}/$file"
 else
     echo "not exist"
