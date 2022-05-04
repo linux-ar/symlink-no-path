@@ -15,7 +15,9 @@ cat ~/.tmp/deja  > ~/.data/anghami/deja
 new="$(noduplicate)"
 echo "$new"
 all=$(echo $new | wc -w)
-output="/storage/emulated/0/mp3/new"
+output="/storage/emulated/0/mp3"
+mkdir "$output/dup3" -p
+music=""
 
 
 getone_url(){
@@ -25,16 +27,32 @@ getone_url(){
 }
 
 download_one(){
-  url=$(cat ~/.data/anghami/url)
-  yt-dlp --audio-quality 5 -x --audio-format mp3 --max-filesize 6m "$url" -o "$output/"'%(title)s.%(ext)s'
+  url="$(cat ~/.data/anghami/url)"
+  music="$(yt-dlp  "$url" --get-title)"
+  music="$(echo $music | sed 's#\W#_#g')"
+  dupmusic=""
+  for i in {1..2};do
+    dupmusic+="${music}.mp3|"
+  done
+  dupmusic+="${music}.mp3"
+  pushd "$output"
+  echo "$dupmusic"
+  yt-dlp --audio-quality 5 -x --audio-format mp3 --max-filesize 6m "$url" -o "$output/${music}.mp3" &&
+  ffmpeg -i "concat:${dupmusic}" -acodec copy "${output}/dup3/${music}.mp3" -y
+  popd
 }
 
 save_one(){
     echo $1 >> ~/.data/anghami/deja
+    # echo "uncppmen save_one"
 }
 
-let i=1
+
+i=0
 for music in $new;do
+  let "i++"
   echo -e "\n\n$((i++))/${all}: ${music}\n\n"
-  getone_url $music && download_one && save_one $music
+  getone_url $music &&
+  download_one &&
+  save_one $music
 done
