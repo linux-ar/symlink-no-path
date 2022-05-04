@@ -1,0 +1,96 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# TODO:
+# - youtube string to $var in function echo 
+# - start grep url that able to download after question
+url=$1
+# url="https://www.youtu.be/IZoEKnbeSvc"
+# url="https://youtu.be/IZoEKnbeSvc"
+# url="https://youtube.com/IZoEKnbeSvc"
+# url="https://www.youtube.com/IZoEKnbeSvc"
+# SITE=$(echo $url  | sed 's/^.*\.\(.*\)\..*\/.*/\1/')
+SITE=$(echo $url  | sed -E 's#^(.*\/\/)*(www\.)*(.*)\.(com)?(net)?(be)?\/.*#\3#')
+# SITE=$(echo $SITE | sed 's/http.*\/\([a-zA-Z0-9].*\)\..*/\1/')
+
+
+my_Choix() {
+  echo "  What should I do with $url ?"
+  echo
+  echo
+  # echo "cut-server) cut youtube url by server"
+  echo "  c         : cut youtube url without server"
+  echo "  y|d|t|D|T : download youtube video to movies-folder"
+  echo "  u         : download youtube video and convert it to mp3(music-folder)"
+
+  read CHOICEX
+    case $CHOICEX in
+     y|d|t|D|T)
+       # playlist="$(youtube-dl -J --flat-playlist "$url" | jq -r .title)"
+       rand=$(openssl rand -base64 48 | sed 's/[^a-z]//g'|sed 's/^\(......\).*/\1/')
+       output="/storage/emulated/0/Movies/simple-${rand}"
+       yt-dlp -o "${output}" $url
+       touch ${output}.*
+     ;;
+     cut-server)
+       echo "  start video time mm:ss"
+       read STARTVIDEO
+       echo "  end video time mm:ss"
+       read ENDVIDEO
+       echo
+       export URL=$url
+       export STARTVIDEO
+       export ENDVIDEO
+       source $HOME/scripts/server/splitByServer.sh
+     ;;
+     c)
+       echo "  start video time mm:ss"
+       read STARTVIDEOP
+       echo "  end video time mm:ss"
+       read ENDVIDEOP
+       echo
+       export URLP=$url
+       export STARTVIDEOP
+       export ENDVIDEOP
+       source $HOME/scripts/video/portionFromYoutube.sh
+     ;;
+     m)
+       echo "Artist"
+       echo "Title"
+       echo "Album"
+       read album
+       yt-dlp --extract-audio --audio-format mp3 --output "/storage/emulated/0/Music/$artist-$title.%(ext)s" $url
+       mid3v2 /storage/emulated/0/Music/$artist-$title.mp3
+     ;;
+     *)
+      clear
+      my_Choix
+     ;;
+  esac
+}
+
+case $SITE in
+   youtube|youtu|youtu|facebook|instagram)
+       my_Choix
+   ;;
+
+   xnxx)
+     echo "  it's xnxx"
+     youtube-dl -o "/storage/emulated/0/Movies/.yyy/%(title)s.%(ext)s" $url
+   ;;
+
+   github)
+     cd $HOME/
+     git clone $url
+   ;;
+
+   soundcloud)
+     scdl -l $url --path /storage/emulated/0/Music
+   ;;
+
+   *)
+     cd ~/storage/downloads
+     wget $url
+   ;;
+
+esac
+echo -e "\n\nfinish"
+sleep 20
