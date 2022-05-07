@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+URLP="https://youtu.be/Hvm9jkVmrq8"
+
+file="/storage/emulated/0/txt/$(youtube-dl --get-filename $URLP)"
+# file="$(cat yy)"
+file="${file%.*}"
+srtfrom="${file}.fr.vtt"
+srtto="${file}.txt"
+youtube-dl --sub-lang fr --write-auto-sub --skip-download -o "${file}" $URLP 
+mv "${srtfrom}" "${srtto}"
+exit 0
+# echo "${file%.*}"
+# file=test.md
+sed -i -E '/^\[Musique\]$/d' $file
+sed -i -E '/^00:/d' $file
+sed -i -E 's#</c>##g' $file
+sed -i -E 's#<00:.{9}><c>##g' $file
