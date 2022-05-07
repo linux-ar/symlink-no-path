@@ -1,8 +1,6 @@
 #!/bin/bash
 
 
-URLP="https://youtu.be/Hvm9jkVmrq8"
-
 file="/storage/emulated/0/txt/$(youtube-dl --get-filename $URLP)"
 # file="$(cat yy)"
 file="${file%.*}"
