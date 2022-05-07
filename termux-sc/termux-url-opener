@@ -19,7 +19,8 @@ my_Choix() {
   # echo "cut-server) cut youtube url by server"
   echo "  c         : cut youtube url without server"
   echo "  y|d|t|D|T : download youtube video to movies-folder"
-  echo "  u         : download youtube video and convert it to mp3(music-folder)"
+  echo "  s         : srt"
+  # echo "  u         : download youtube video and convert it to mp3(music-folder)"
 
   read CHOICEX
     case $CHOICEX in
@@ -51,6 +52,10 @@ my_Choix() {
        export STARTVIDEOP
        export ENDVIDEOP
        source $HOME/scripts/video/portionFromYoutube.sh
+     ;;
+     s)
+       export URLP=$url
+       source $HOME/scripts/video/get_srt
      ;;
      m)
        echo "Artist"
