@@ -1,38 +1,39 @@
 #!/bin/bash
+if [[ $# < 2 ]];then exit 1;fi
+
+dir="/projects/p5/$1"
 title="$2"
-# cd "/data/data/com.termux/files/home/storage/downloads/yyy/p5.js/"
-cd "/opt/P5.JS"
-mkdir $1
-cd $1
-touch index.html
-touch sketch.js
-touch sketch.js
-touch style.css
+mkdir $dir/lib -p
+touch $dir/index.html
+touch $dir/sketch.js
+touch $dir/style.css
+cp -f $dir/../p5.js $dir/lib
 
 # index.html
-echo "<!DOCTYPE html>" >> index.html
-echo "<html>" >> index.html
-echo 
-echo "<head>" >> index.html
-echo "  <script src=\"/opt/P5.JS/Library/p5.js\"></script>" >> index.html
-echo "<link rel=\"stylesheet\" href=\"style.css\">" >> index.html
-echo "  <meta charset=\"utf-8\" />" >> index.html
-echo "  <title>$title</title>" >> index.html
-echo "</head>" >> index.html
-echo 
-echo "<body>" >> index.html
-echo "  <script src=\"sketch.js\"></script>" >> index.html
-echo "</body>" >> index.html
-echo 
-echo "</html>" >> index.html
+echo "<!DOCTYPE html>
+<html>
+
+<head>
+  <script src=\"lib/p5.js\"></script>
+<link rel=\"stylesheet\" href=\"style.css\">
+  <meta charset=\"utf-8\" />
+  <title>$title</title>
+</head>
+
+<body>
+  <script src=\"sketch.js\"></script>
+</body>
+
+</html>" >> $dir/index.html
 
 
 # sketch.js
-echo "function setup() {" >> sketch.js
-echo "    createCanvas(640,360);" >> sketch.js
-echo "}" >> sketch.js
-echo 
-echo "function draw() {" >> sketch.js
-echo "    background(127);" >> sketch.js
-echo "}" >> sketch.js
-echo 
+echo "
+function setup() {
+    createCanvas(640,360);
+}
+
+function draw() {
+    background(127);
+}
+" >> $dir/sketch.js
