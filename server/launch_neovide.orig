@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# e file1.txt
+
+tmpPID="/tmp/nvim_server.pid" && touch  $tmpPID
+PID=$(cat /tmp/nvim_server.pid)
+file="$1"
+PWD=$(pwd)
+
+if [[ -z $tmpPID &&  $(ps -p $PID > /dev/null) ]] ; then
+        echo "server run" > /dev/null
+else
+    nvim --headless --listen localhost:6666   & echo $! > "$tmpPID"
+fi
+
+neovide --remote-tcp=localhost:6666
