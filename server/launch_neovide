@@ -7,8 +7,10 @@ PID=$(cat /tmp/nvim_server.pid)
 file="$1"
 PWD=$(pwd)
 
-if [[ -z $tmpPID &&  $(ps -p $PID > /dev/null) ]] ; then
+if [[ -z $tmpPID ]];then
+    if ps -p $PID > /dev/null;then
         echo "server run" > /dev/null
+    fi
 else
     nvim --headless --listen localhost:6666   & echo $! > "$tmpPID"
 fi
