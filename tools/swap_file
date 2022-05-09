@@ -1,8 +1,9 @@
 #!/bin/bash
 
-swapfile="$1"
+SWAPFILE="${1:-/swapfile}"
+GB="${2:-4G}"
 
-sudo fallocate -l 3G "$swapfile"
-sudo chmod 600 "$swapfile"
-sudo mkswap "$swapfile"
-sudo swapon "$swapfile"
+sudo fallocate -l "$GB" "$SWAPFILE"
+sudo chmod 600 "$SWAPFILE"
+sudo mkswap "$SWAPFILE"
+sudo swapon "$SWAPFILE"
