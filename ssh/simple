@@ -1,2 +1,2 @@
 #!/bin/bash
-sshfs $(cat ~/.cache/ip):/storage/emulated/0 /mnt/simple
+sshfs $(cat ~/.cache/ip):/storage/emulated/0 /mnt/simple -p2222

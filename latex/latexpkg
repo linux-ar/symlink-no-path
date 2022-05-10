@@ -28,6 +28,7 @@ for item in ${delete[@]};do
 done
 
 declare -a download=(
+      "beamertheme-metropolis"
       "adforn"
       "amsfonts"
       "amsmath"
