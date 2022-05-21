@@ -1,41 +1,36 @@
 #!/bin/bash
 
 clear
-file=$(git status | awk '/modified:/{print $2}'|fzf)
+total=$(git status | awk '/modified:/{print $2}'|wc -l)
+file=""
 
 
 
 f(){
-    echo "  What should I do with $file ?"
+    clear
+    git diff "$file"
+    echo -e '\n------------------\n'
     echo "  s|S|d|D : show Diff"
     echo "  c|C     : commit"
-    read CHOICEX
-    case $CHOICEX in
-        d|D|s|S)
-            git diff "$file"
-            echo -e '\n------------------\n'
-            echo -e 'Press Entre to continue'
-            read COMMIT_DIFF
-            clear
-            case $COMMIT_DIFF in
-                c|c)
-                    clear
-                    echo "  commit message:like up"
-                    read commit
-                    git add "$file"
-                    git commit -m "${commit:-up}"
-                    ;;
-            esac
-            ;;
+    echo "  *       : exit"
+    read COMMIT
+    case $COMMIT in
         c|C)
+            clear
             echo "  commit message:like up"
-            read COMMIT
+            read commit
             git add "$file"
-            git commit -m "${COMMIT:-up}"
+            git commit -m "${commit:-up}"
+            ;;
+        *)
+            exit
             ;;
     esac
 }
-if [[ -n "$file" ]];then
-    f
-fi
-
+while [[ $total != 0 ]];do
+    file=$(git status | awk '/modified:/{print $2}'|fzf)
+    if [[ -n "$file" ]];then
+        f
+    fi
+    total=$(git status | awk '/modified:/{print $2}'|wc -l)
+done
