@@ -23,7 +23,7 @@ f(){
             git commit -m "${commit:-up}"
             ;;
         *)
-            exit
+            return 0
             ;;
     esac
 }
