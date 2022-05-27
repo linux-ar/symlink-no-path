@@ -1,13 +1,13 @@
 #!/bin/bash
 
-new=$1
+new=${1:-app1}
 mkdir -p /projects/flutter/$new
 if [ ! -f "/projects/flutter/${new}/pubspec.yaml" ] 
 then
   cd /projects/flutter/ 
   flutter create $new
   flutter config --enable-linux-desktop
-  rm -rf $new/test/
+  # rm -rf $new/test/
 fi
 
 
@@ -32,6 +32,6 @@ Enter
 tmux select-window -t Flutter:$new
 tmux -u switch -t Flutter
 
-" > ~/scripts/my/tmux/${new}.sh
-chmod +x ~/scripts/my/tmux/${new}.sh
-echo "export $new=/projects/flutter/$new" >> $export_Dirs
+" > ~/scripts/tmux/${new}.sh
+chmod +x ~/scripts/tmux/${new}.sh
+# echo "export $new=/projects/flutter/$new" >> $export_Dirs
