@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ip a | grep -A1 wl* | grep inet| awk '{print $2}'
+echo -e '\n\n\n'
+ping -c1 8.8.8.8

@@ -1,0 +1,117 @@
+#!/bin/bash
+
+sship(){
+    echo -e '\n------------------\n'
+    echo "  c|C|<space> : read last ip"
+    echo "  *           : exit"
+    read CHOIX
+    case $CHOIX in
+        c|C)
+            clear
+            echo "  192.168.xxx.000"
+            read ip1
+            echo "  192.168.000.xxx"
+            read ip2
+            echo 192.168.${ip1:-1}.${ip2:-2} >  ~/.cache/ip
+            clear
+            echo
+            cat ~/.cache/ip
+            ;;
+        *)
+            return 0
+            ;;
+    esac
+}
+
+
+cdto(){
+    dirs=(
+        "c /opt/book/master"
+        "${c_project}/suckless/dwm"
+        "/root/stow"
+        "/root/.config/nvim/lua"
+        "/root/scripts"
+        "${flutter_project}"
+    )
+    choix=$(printf "%s\n" "${dirs[@]}"|fzf)
+    case $choix in
+        "${c_project}/suckless/dwm")
+            cd ${c_project}/suckless/dwm
+            ;;
+        "~/stow")
+            cd ~/stow
+            ;;
+        "/root/.config/nvim/lua")
+            cd /root/.config/nvim/lua
+            ;;
+        "/opt/book/master")
+            cd /opt/book/master
+            ;;
+        "/root/scripts")
+            cd /root/scripts
+            ;;
+        *)
+            echo 'false'
+        ;;
+    esac
+    $SHELL
+
+}
+
+
+clear
+list=(
+    "change ip for ssh"
+    "connect ayoub2"
+    "cd"
+    )
+job=$(printf "%s\n" "${list[@]}"|fzf)
+
+
+case $job in
+    "change ip for ssh")
+        sship
+        ;;
+    "connect ayoub2")
+        clear
+        ayoub2
+        ;;
+    "cd")
+        clear
+        cdto
+        ;;
+    *)
+        echo 'false'
+        ;;
+esac
+
+
+# f(){
+#     clear
+#     git diff "$file"
+#     echo -e '\n------------------\n'
+#     echo "  s|S|d|D : show Diff"
+#     echo "  c|C     : commit"
+#     echo "  *       : exit"
+#     read COMMIT
+#     case $COMMIT in
+#         c|C)
+#             clear
+#             echo "  commit message:like up"
+#             read commit
+#             git add "$file"
+#             git commit -m "${commit:-up}"
+#             ;;
+#         *)
+#             return 0
+#             ;;
+#     esac
+# }
+
+# while [[ $total != 0 ]];do
+#     file=$(git status | awk '/modified:/{print $2}'|fzf)
+#     if [[ -n "$file" ]];then
+#         f
+#     fi
+#     total=$(git status | awk '/modified:/{print $2}'|wc -l)
+# done

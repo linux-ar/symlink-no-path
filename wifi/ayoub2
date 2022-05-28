@@ -1,0 +1,25 @@
+#!/bin/bash
+
+sleep 3
+timeout 10 sv restart iwd
+timeout 10 iwctl station wlp3s0 scan
+timeout 10 iwctl station wlp3s0 disconnect
+let x=0
+a="jj"
+while [ -n "$a" ];do
+    sleep 1;
+    echo 'try to connect'
+    a=$(timeout 10 iwctl --passphrase ayoub123a station wlp3s0 connect ayoub2)
+    let x=x+1
+    echo "a$x=$a"
+    if [[ $x == 5 ]];then
+        echo "x=$a"
+        sv restart iwd
+    fi
+done
+echo "fin"
+# iwctl station wlp3s0 scan
+sv restart dhcpcd
+sv restart chronyd
+# TODO while to connect
+# timeout 10 ping -c 1 8.8.8.8
