@@ -12,6 +12,7 @@ f(){
     echo -e '\n------------------\n'
     echo "  s|S|d|D : show Diff"
     echo "  c|C     : commit"
+    echo "  v|V     : nvim  "
     echo "  *       : exit"
     read COMMIT
     case $COMMIT in
@@ -21,6 +22,10 @@ f(){
             read commit
             git add "$file"
             git commit -m "${commit:-up}"
+            ;;
+        v|V)
+            clear
+            nvim "$file"
             ;;
         *)
             return 0
