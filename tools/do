@@ -26,20 +26,25 @@ sship(){
 
 cdto(){
     dirs=(
-        "c /opt/book/master"
+        "/opt/book/master"
         "${c_project}/suckless/dwm"
+        "${tex_project}/aly"
         "/root/stow"
         "/root/.config/nvim/lua"
         "/root/scripts"
         "${flutter_project}"
     )
     choix=$(printf "%s\n" "${dirs[@]}"|fzf)
+    echo $choix
     case $choix in
         "${c_project}/suckless/dwm")
             cd ${c_project}/suckless/dwm
             ;;
         "~/stow")
             cd ~/stow
+            ;;
+        "${tex_project}/aly")
+            cd ${tex_project}/aly
             ;;
         "/root/.config/nvim/lua")
             cd /root/.config/nvim/lua
