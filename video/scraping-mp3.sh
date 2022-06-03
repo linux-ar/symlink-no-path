@@ -5,7 +5,7 @@ mkdir -p /data/data/com.termux/files/home/.tmp
 echo "" > ~/.data/anghami/url
 
 # trim and filtred
-cat ~/.data/anghami/new | awk NF | awk '{$1=$1;print}' | tr ' ' '+' | sort | uniq> ~/.tmp/new
+cat ~/.data/anghami/new | awk NF | awk '{$1=$1;print}' | tr ' ' '+' |tr '/' '+'| sort | uniq> ~/.tmp/new
 cat ~/.tmp/new  > ~/.data/anghami/new
 
 cat ~/.data/anghami/deja | sort | uniq > ~/.tmp/deja
@@ -18,6 +18,7 @@ all=$(echo $new | wc -w)
 output="/storage/emulated/0/mp3"
 mkdir "$output/dup3" -p
 music=""
+title=""
 
 
 getone_url(){
@@ -27,23 +28,28 @@ getone_url(){
 }
 
 download_one(){
+  clear
   url="$(cat ~/.data/anghami/url)"
-  music="$(yt-dlp  "$url" --get-title)"
-  music="$(echo $music | sed 's#\W#_#g')"
+  title="$(yt-dlp  "$url" --get-title)"
+  title="$(echo $title| tr ' ' '+'|tr '/' '+'| tr '(' '+')| tr ')' '+'"
+  echo -e "\n\n-----\nurl=$url\ntitle=$title\n-----\n"
+  # title="$(echo $music | sed 's#\W#_#g')"
   dupmusic=""
   for i in {1..2};do
-    dupmusic+="${music}.mp3|"
+    dupmusic+="${title}.mp3|"
   done
-  dupmusic+="${music}.mp3"
+  dupmusic+="${title}.mp3"
   pushd "$output"
-  echo "$dupmusic"
-  yt-dlp --audio-quality 5 -x --audio-format mp3 --max-filesize 6m "$url" -o "$output/${music}.mp3" &&
-  ffmpeg -i "concat:${dupmusic}" -acodec copy "${output}/dup3/${music}.mp3" -y
+  echo -e "\n\n-----\ndupmusic=$dupmusic\npath=$output\n-----\n"
+  echo yt-dlp --audio-quality 5 -x --audio-format mp3 --max-filesize 6m "$url" -o "$output/${title}.mp3"
+  yt-dlp --audio-quality 5 -x --audio-format mp3 --max-filesize 6m "$url" -o "$output/${title}.mp3" &&
+  ffmpeg -i "concat:${dupmusic}" -acodec copy "${output}/dup3/${title}.mp3" -y
+  sleep 5
   popd
 }
 
 save_one(){
-    echo $1 >> ~/.data/anghami/deja
+    echo ${music} >> ~/.data/anghami/deja
     # echo "uncppmen save_one"
 }
 
@@ -54,5 +60,5 @@ for music in $new;do
   echo -e "\n\n$((i++))/${all}: ${music}\n\n"
   getone_url $music &&
   download_one &&
-  save_one $music
+  save_one 
 done

@@ -29,7 +29,12 @@ my_Choix() {
        rand=$(openssl rand -base64 48 | sed 's/[^a-z]//g'|sed 's/^\(......\).*/\1/')
        output="/storage/emulated/0/Movies/simple-${rand}"
        yt-dlp -o "${output}" $url
-       touch ${output}.*
+       if [[ -f $output ]]; then 
+          mv ${output} $output.mkv 
+          touch ${output}.mkv
+        else
+         touch ${output}.* 
+        fi
      ;;
      cut-server)
        echo "  start video time mm:ss"
@@ -73,7 +78,7 @@ my_Choix() {
 }
 
 case $SITE in
-   youtube|youtu|youtu|facebook|instagram)
+   youtube|youtu|youtu|facebook|instagram|tiktok)
        my_Choix
    ;;
 

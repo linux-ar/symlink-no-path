@@ -1,17 +1,45 @@
 #!/bin/bash
 
+URLP="https://youtu.be/RDojFBCPfew"
+
+file=""
+srtfrom=""
+srtto=""
 
 file="/storage/emulated/0/txt/$(youtube-dl --get-filename $URLP)"
-# file="$(cat yy)"
-file="${file%.*}"
-srtfrom="${file}.fr.vtt"
-srtto="${file}.txt"
-youtube-dl --sub-lang fr --write-auto-sub --skip-download -o "${file}" $URLP 
-mv "${srtfrom}" "${srtto}"
-exit 0
-# echo "${file%.*}"
-# file=test.md
-sed -i -E '/^\[Musique\]$/d' $file
-sed -i -E '/^00:/d' $file
-sed -i -E 's#</c>##g' $file
-sed -i -E 's#<00:.{9}><c>##g' $file
+echo $file
+
+if [[ -n "$file" ]];then
+  echo "\$file: $file"
+  file="${file%.*}"
+  srtfrom="${file}.fr.vtt"
+  srtto="${file}.txt"
+  youtube-dl --sub-lang fr --write-auto-sub --skip-download -o "${file}" $URLP 
+else
+  echo "nest pas de \$file $file"
+  exit 0
+fi
+
+echo "\n\n-----strfrom\n"
+
+if [[ -f $srtfrom ]];then
+  echo "\$srtfrom: $srtfrom"
+  mv "${srtfrom}" "${srtto}"
+else
+  echo "nest pas de \$srtfrom $srtfrom"
+  exit 0
+fi
+
+echo "\n\n-----srtto\n"
+
+if [[ -f $srtto ]];then
+  echo "\$srtto: $srtto"
+  sed -i -E '/^\[Musique\]$/d' "$srtto"
+  sed -i -E '/^00:/d' "$srtto"
+  sed -i -E 's#</c>##g' "$srtto"
+  sed -i -E 's#<00:.{9}><c>##g' "$srtto"
+else
+  echo "nest pas de \$srtto $srtto"
+  exit 0
+fi
+
