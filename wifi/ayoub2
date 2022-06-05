@@ -1,11 +1,10 @@
 #!/bin/bash
 
-sleep 3
-timeout 10 sv restart iwd
-timeout 10 iwctl station wlp3s0 scan
-timeout 10 iwctl station wlp3s0 disconnect
-let x=0
+iwctl station wlp3s0 scan
+# iwctl station wlp3s0 disconnect
+
 a="jj"
+let x=0
 while [ -n "$a" ];do
     sleep 1;
     echo 'try to connect'
@@ -20,6 +19,7 @@ done
 echo "fin"
 # iwctl station wlp3s0 scan
 sv restart dhcpcd
+sleep 3
 sv restart chronyd
 # TODO while to connect
 # timeout 10 ping -c 1 8.8.8.8
