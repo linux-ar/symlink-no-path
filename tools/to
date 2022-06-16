@@ -1,0 +1,7 @@
+#!/bin/bash
+
+file="$(fzf)"
+if [[ -f "$file" ]];then
+        file="/root/scripts/$(echo "$file" | sed 's/^..//')"
+        ln -s "$file"  /usr/local/bin
+fi
