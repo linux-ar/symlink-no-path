@@ -1,7 +1,16 @@
 #!/bin/bash
 
-pkill iwd
-# iwctl station wlp3s0 scan
+f(){
+    pkill iwd
+    sleep 5
+    iwctl station wlp3s0 scan
+    sv restart chronyd
+}
+g(){
+    f >/dev/null 2>&1
+}
+g &!
+sleep 1
 # iwctl station wlp3s0 disconnect
 #
 # a="jj"
@@ -20,7 +29,6 @@ pkill iwd
 # echo "fin"
 # # iwctl station wlp3s0 scan
 # sv restart dhcpcd
-# sleep 3
-# sv restart chronyd
+
 # # TODO while to connect
 # # timeout 10 ping -c 1 8.8.8.8
