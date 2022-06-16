@@ -1,9 +1,12 @@
 #!/bin/bash
 
 clear
-total=$(git status | awk '/modified:/{print $2}'|wc -l)
+total="$(git status | awk '/modified:/{print $2} /renamed:/{print $2}'|wc -l)"
+let total=total+$(git status |
+    tail --line=+$(echo $(( $(git status | awk '/Untracked files:/{ print NR}') + 2 ))) |
+    head --lines=-1 |
+    wc -l)
 file=""
-
 
 
 f(){
@@ -33,9 +36,16 @@ f(){
     esac
 }
 while [[ $total != 0 ]];do
-    file=$(git status | awk '/modified:/{print $2}'|fzf)
+# for i in {1..1};do
+    file="$(git status | awk '/modified:/{print $2}')"
+    file+="$(git status |
+    tail --line=+$(echo $(( $(git status | awk '/Untracked files:/{ print NR}') + 2 ))) |
+    head --lines=-1)"
+    file="$(echo -e "$file" | sed -E 's/^\s+//g' | tr '\t' '\n'| fzf)"
     if [[ -n "$file" ]];then
+        echo "$file: exist"
         f
     fi
     total=$(git status | awk '/modified:/{print $2}'|wc -l)
 done
+
