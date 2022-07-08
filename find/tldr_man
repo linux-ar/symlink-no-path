@@ -1,0 +1,7 @@
+#!/bin/bash
+
+declare -a args=$@
+# man=$(man $arg[@])
+# app=${args[1]}
+echo ${args[@]}
+echo ${args[1..]}
