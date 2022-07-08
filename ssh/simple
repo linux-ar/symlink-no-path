@@ -1,2 +1,4 @@
 #!/bin/bash
+# todo if connect then run it
 sshfs $(cat ~/.cache/ip):/storage/emulated/0 /mnt/simple -p2222
+ls /mnt/simple
