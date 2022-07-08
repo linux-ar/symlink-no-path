@@ -1,0 +1,10 @@
+#!/bin/bash
+umount -l /mnt/usb >/dev/null 2>&1
+file=$(lsblk | awk '{if ($3 == 1) print $1}'| grep -v 'sr0'| grep '[0-9]'| sed 's/^..//')
+
+if [[ -n "${file}" ]];then
+    # TODO pip $file to fzf
+    file=$(lsblk | awk '{if ($3 == 1) print $1}'| grep -v 'sr0'| grep '[0-9]'| sed 's/^..//'|fzf)
+    mount /dev/${file} /mnt/usb
+    echo "mount /dev/${file} /mnt/usb"
+fi
