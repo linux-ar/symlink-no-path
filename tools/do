@@ -1,12 +1,6 @@
 #!/bin/bash
 
 sship(){
-    echo -e '\n------------------\n'
-    echo "  c|C|<space> : read last ip"
-    echo "  *           : exit"
-    read CHOIX
-    case $CHOIX in
-        c|C)
             clear
             echo "  192.168.xxx.000"
             read ip1
@@ -16,11 +10,6 @@ sship(){
             clear
             echo
             cat ~/.cache/ip
-            ;;
-        *)
-            return 0
-            ;;
-    esac
 }
 
 
