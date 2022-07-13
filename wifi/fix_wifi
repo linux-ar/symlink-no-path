@@ -1,8 +1,10 @@
 #!/bin/bash
 
 f(){
+    # sleep 5
+    ip link set wlp3s0 down
     pkill iwd
-    sleep 5
+    ip link set wlp3s0 up
     iwctl station wlp3s0 scan
     sv restart chronyd
 }
