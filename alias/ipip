@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pkg=${1-}
+
+if [[ $# == 0 ]];then
+    echo -e '\ninstall pip pkg\n\n\t$ pip install firefox\n\t$ ipip firefox'
+else
+    python3 -m pip install $@ && echo $@ >> /opt/applist/pip.list
+fi

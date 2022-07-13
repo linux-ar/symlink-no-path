@@ -1,0 +1,10 @@
+#!/bin/bash
+alias xro='xbps-remove -vROo'
+
+pkg=${1-}
+
+if [[ $# == 0 ]];then
+    echo -e '\nremove the xbps pkg and our dependencies \n\n\t$ xbps-remove -vROo firefox\n\t$ xro firefox'
+else
+    xbps-remove -vROo $@ && echo $@ >> /opt/applist/xbps-remove.list
+fi

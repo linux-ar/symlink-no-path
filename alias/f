@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pkg=${1-}
+
+if [[ $# == 1 ]];then
+    xbps-query -Rs $pkg | grep --color=auto -i $pkg
+elif [[ $# == 2 ]];then
+    xbps-query -Rs $pkg | grep --color=auto -iE "$1|$2"
+else
+    echo -e '\nsearch for xbps package\n\n\t$ f firefox\n\t$ f firefox devel'
+fi

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pkg=${1-}
+
+if [[ $# == 0 ]];then
+    echo -e '\ninstall xbps pkg\n\n\t$ xbps-install -S firefox\n\t$ is firefox'
+else
+    xbps-install -S $@ && echo $@ >> /opt/applist/xbps.list
+fi

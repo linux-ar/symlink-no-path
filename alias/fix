@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+pkg=${1-}
+
+if [[ $# == 1 ]];then
+    xbps-pkgdb -a $pkg
+else
+    echo -e '\ntry to fix pkg\n\n$ fix firefox'
+fi
+
+

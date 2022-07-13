@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pkg=${1-}
+
+if [[ $# == 0 ]];then
+    echo -e '\ninstall npm pkg\n\n\t$ npm install firefox\n\t$ inpm firefox'
+else
+     command npm install -g $@ && echo $@ >> /opt/applist/npm.list
+fi

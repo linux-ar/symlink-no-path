@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+if [[ $# >= 1 ]];then
+    echo -e '\nupdate full system \n\n\t$ xbps-install -Su\n\t$ iu'
+else
+	xbps-install -Su 
+fi
