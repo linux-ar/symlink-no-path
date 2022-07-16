@@ -2,9 +2,9 @@
 
 sship(){
             clear
-            echo "  192.168.xxx.000"
+            echo "  192.168."
             read ip1
-            echo "  192.168.000.xxx"
+            echo "  192.168.${ip1}."
             read ip2
             echo 192.168.${ip1:-1}.${ip2:-2} >  ~/.cache/ip
             clear

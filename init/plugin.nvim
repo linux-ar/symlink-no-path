@@ -8,9 +8,9 @@ plugin="${1}"
 mkdir "${plugin}".nvim
 cd "${plugin}".nvim
 
-mkdir lua doc
+mkdir lua doc after/plugin -p
 touch "doc/${plugin}.txt"
-touch "lua/${plugin}.lua"
+touch "after/plugin/${plugin}.lua"
 
 
 # ------------------------------------------
@@ -27,7 +27,7 @@ echo -e "# ${plugin}.nvim"'
 
 # ------------------------------------------
 echo -e 'indent_type = "Spaces"
-indent_width = 2
+indent_width = 4
 quote_style = "AutoPreferSingle"
 no_call_parentheses = true' > stylua.toml
 

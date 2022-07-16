@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pkg=${1-}
+
+if [[ $# == 0 ]];then
+    echo -e '\ninstall the flathub pkg \n\n\t$ flatpak install flathub firefox\n\t$ iflatpak firefox'
+else
+    flatpak install flathub $pkg && echo $pkg >> /opt/applist/flatpak.list
+fi

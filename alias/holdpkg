@@ -6,5 +6,5 @@ pkg=${1-}
 if [[ $# == 1 ]];then
     xbps-pkgdb -m hold $pkg
 else
-    echo -e '\nfreeze and hold pkg, it's will deny xbps to update this pkg\n\n$ holdpkg firefox'
+    echo -e '\nfreeze and hold pkg, it s will deny xbps to update this pkg\n\n$ holdpkg firefox'
 fi

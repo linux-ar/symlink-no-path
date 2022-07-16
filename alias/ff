@@ -4,7 +4,9 @@
 pkg=${1-}
 
 if [[ $# == 1 ]];then
-    xbps-query -RS "$pkg" | awk '/homepage/ {print $2}' | xclip -selection clipboard
+    url="$(xbps-query -RS "$pkg" | awk '/homepage/ {print $2}')"
+    echo $url
+    echo "$url" | xclip -selection clipboard
 else
     echo -e '\nselecte the url of related repo that hosted in github,gitlab... \n\n$ ff firefox\nhttps://github.com/firefox/mozilla'
 fi
