@@ -8,7 +8,12 @@ elif [[ $# == 1  ]] && [[ -s $1 ]];then
     echo trash-put --trash-dir=/root/.Trash-0 $@
 else
     if [[ $# == 1 ]];then
-        echo -e "\n$1 is empty"
+        if [[ -f  $1 ]];then
+            echo -e "\n$1 is empty"
+        else
+            echo -e "\n$1 is not exist"
+            exit
+        fi
     else
         echo -e "\nmulti file"
         echo "$@"
