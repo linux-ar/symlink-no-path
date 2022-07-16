@@ -1,0 +1,17 @@
+#!/bin/bash
+
+pkg=${@-}
+
+if [[ $# == 0 ]];then
+    echo -e '\ntrash-put \n\n\t$ trash-put --trash-dir=~/.Trash-0 foo\n\t$ rm foo'
+elif [[ $# == 1  ]] && [[ -s $1 ]];then
+    echo trash-put --trash-dir=/root/.Trash-0 $@
+else
+    if [[ $# == 1 ]];then
+        echo -e "\n$1 is empty"
+    else
+        echo -e "\nmulti file"
+        echo "$@"
+    fi
+    echo -e '\nuse\n$ \\rm foo bar'
+fi
