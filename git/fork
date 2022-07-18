@@ -1,0 +1,11 @@
+#!/bin/bash
+
+url="https://github.com/jarun/nnn/blob/master/Makefile"
+# sed not alow to match group > 9, so bettre way is split it
+user_repo="$(sed -E -e 's#((git|ssh|http(s)?)|(git@[\w\.]+))(://)?(([\w\.@\:/\-~])[^/]+)(/|:)##' -e 's#(\w+)/(\w+).*#\1/\2#' <<< $url)"
+repo=${user_repo#*/}
+
+
+echo $repo
+
+gh repo fork https://github.com/$user_repo --clone --org ayoub-fork && cd ${repo} || echo 'error';exit
