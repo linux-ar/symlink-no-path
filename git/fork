@@ -1,15 +1,28 @@
 #!/bin/bash
 
-url="https://github.com/jarun/nnn/blob/master/Makefile"
-url="https://github.com/nvim-lua/plenary.nvim/blob/master/lua/plenary/async_lib/async.lua"
+# url="https://github.com/jarun/nnn/blob/master/Makefile"
+# url="https://github.com/nvim-lua/plenary.nvim/blob/master/lua/plenary/async_lib/async.lua"
+url=${1-}
+[[ ! -z $url ]] || exit
+
 # sed not alow to match group > 9, so bettre way is split it
 # dash - , should be at end or begin
 user_repo="$(sed -E -e 's#((git|ssh|http(s)?)|(git@[\w\.]+))(://)?(([\w\.@\:/\-~])[^/]+)(/|:)##' -e 's#(\w+)/(\w+).*#\1/\2#' <<< $url)"
 repo=${user_repo#*/}
+repo_tmp=$repo${RANDOM:0:3}
 
-# gh repo fork https://github.com/$user_repo --clone --org ayoub-fork && cd ${repo} || echo 'error';exit
+# todo: git fork manualy to choose depth
+gh repo fork https://github.com/$user_repo --clone=false --org ayoub-fork || exit
+
+mkdir -p ~/Git/fork && cd $_
+git clone --depth=1 git@github.com:ayoub-fork/$repo $repo_tmp
+cd $repo_tmp
+git checkout -b patch-1
+sleep 1
 
 file="$(sed -E 's#((git|ssh|http(s)?)|(git@[a-zA-Z0-9\.]+))(://)?(([-a-zA-Z0-9\.@\:/~])[^/]+)(/|:)(([-a-zA-Z0-9\_\.])+/){4}##' <<< $url)"
 
-echo $file
-# echo nvim 
+clear
+echo "$file"
+sleep 1
+nvim "$file"
