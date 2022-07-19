@@ -10,18 +10,23 @@ url=${1-}
 user_repo="$(sed -E -e 's#((git|ssh|http(s)?)|(git@[\w\.]+))(://)?(([\w\.@\:/\-~])[^/]+)(/|:)##' -e 's#(\w+)/(\w+).*#\1/\2#' <<< $url)"
 repo=${user_repo#*/}
 
-# todo: git fork manualy to choose depth
-gh repo fork https://github.com/$user_repo --clone=false --org ayoub-fork || exit
+[[ -z $repo ]] && exit
 
-mkdir -p ~/Git/fork && cd $_
-git clone --depth=1 git@github.com:ayoub-fork/$repo
-cd $repo
-git checkout -b patch-1
-sleep 1
+if [[ ! -d ~/Git/fork/$repo ]]; then
+    # todo: git fork manualy to choose depth
+    gh repo fork https://github.com/$user_repo --clone=false --org ayoub-fork || exit
+
+    mkdir -p ~/Git/fork && cd $_
+    git clone --depth=1 git@github.com:ayoub-fork/$repo
+    cd $repo
+    git checkout -b patch-1
+else
+    echo '\nAlready you have this directory in your disk and remote'
+fi
 
 file="$(sed -E 's#((git|ssh|http(s)?)|(git@[a-zA-Z0-9\.]+))(://)?(([-a-zA-Z0-9\.@\:/~])[^/]+)(/|:)(([-a-zA-Z0-9\_\.])+/){4}##' <<< $url)"
 
-clear
-echo "$file"
-sleep 1
+sleep 1 && clear
+echo "$file" && sleep 1
+
 nvim "$file"
