@@ -9,14 +9,13 @@ url=${1-}
 # dash - , should be at end or begin
 user_repo="$(sed -E -e 's#((git|ssh|http(s)?)|(git@[\w\.]+))(://)?(([\w\.@\:/\-~])[^/]+)(/|:)##' -e 's#(\w+)/(\w+).*#\1/\2#' <<< $url)"
 repo=${user_repo#*/}
-repo_tmp=$repo${RANDOM:0:3}
 
 # todo: git fork manualy to choose depth
 gh repo fork https://github.com/$user_repo --clone=false --org ayoub-fork || exit
 
 mkdir -p ~/Git/fork && cd $_
-git clone --depth=1 git@github.com:ayoub-fork/$repo $repo_tmp
-cd $repo_tmp
+git clone --depth=1 git@github.com:ayoub-fork/$repo
+cd $repo
 git checkout -b patch-1
 sleep 1
 
