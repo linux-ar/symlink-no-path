@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+mdbook serve $HOME/Book/bash -p 8001 -n 127.0.0.1
+# xdg-open 127.0.0.1:8001
