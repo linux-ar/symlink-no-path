@@ -1,5 +1,0 @@
-#!/bin/bash
-
-brave-browser-stable --no-sandbox >/dev/null 2>&1 &
-sleep 40
-pkill brave
