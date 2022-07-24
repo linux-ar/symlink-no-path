@@ -1,0 +1,9 @@
+#!/bin/bash
+
+math="${1-}"
+
+if [[ -z $math ]];then
+    echo -e '\n\t$ echo String | bc\n\t$ ebc String\n'
+else
+    echo "$math" | bc
+fi

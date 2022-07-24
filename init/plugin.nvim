@@ -1,20 +1,33 @@
 #!/bin/bash
 
-if [[ -z "$1" ]]; then
-    echo "error"
+name="${1-}.nvim"
+path="$HOME/Git/plugin"
+plugin="${path}/${name}"
+
+if [[ $# == 0 ]]; then
+    echo -e '\nCreate new plugin for neovim\n'
     exit
 fi
-plugin="${1}"
-mkdir "${plugin}".nvim
-cd "${plugin}".nvim
 
-mkdir lua doc after/plugin -p
-touch "doc/${plugin}.txt"
-touch "after/plugin/${plugin}.lua"
+if [[ -s "$plugin" ]]; then
+    echo "already excite"
+    exit
+fi
+
+
+mkdir "$path/" -p 
+mkdir "$plugin" -p
+
+
+mkdir "$plugin/lua" -p
+mkdir "$plugin/doc" -p
+mkdir "$plugin/after/plugin" -p
+touch "$plugin/doc/${name}.txt"
+touch "$plugin/after/plugin/${name}.lua"
 
 
 # ------------------------------------------
-echo -e "# ${plugin}.nvim"'
+echo -e "# ${name}"'
   - [x] ...
   - [x] ...
 <details>
@@ -23,13 +36,13 @@ echo -e "# ${plugin}.nvim"'
 ```lua
 
 ```
-</details>' > README.md
+</details>' > "$plugin/README.m"d
 
 # ------------------------------------------
 echo -e 'indent_type = "Spaces"
 indent_width = 4
 quote_style = "AutoPreferSingle"
-no_call_parentheses = true' > stylua.toml
+no_call_parentheses = true' > "$plugin/stylua.toml"
 
 
 # ------------------------------------------
@@ -53,4 +66,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.' > LICENSE
+SOFTWARE.' > "$plugin/LICENSE"

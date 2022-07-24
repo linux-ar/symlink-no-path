@@ -1,0 +1,10 @@
+#!/bin/python3
+
+# import sympy
+from sys import argv
+file, arg1 = argv
+var=float(eval(arg1))
+
+
+print("%f" %(var))
+

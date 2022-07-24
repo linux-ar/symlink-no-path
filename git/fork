@@ -7,7 +7,8 @@ url=${1-}
 
 # sed not alow to match group > 9, so bettre way is split it
 # dash - , should be at end or begin
-user_repo="$(sed -E -e 's#((git|ssh|http(s)?)|(git@[\w\.]+))(://)?(([\w\.@\:/\-~])[^/]+)(/|:)##' -e 's#(\w+)/(\w+).*#\1/\2#' <<< $url)"
+user_repo="$(sed -E -e 's#((git|ssh|http(s)?)|(git@[\w\.]+))(://)?(([\w\.@\:/\-~])[^/]+)(/|:)##' -e \
+    's#(([-a-zA-Z0-9\_\.])+)/(([-a-zA-Z0-9\_\.])+).*#\1/\3#' <<< $url)"
 repo=${user_repo#*/}
 
 [[ -z $repo ]] && exit
@@ -20,13 +21,12 @@ if [[ ! -d ~/Git/fork/$repo ]]; then
     git clone --depth=1 git@github.com:ayoub-fork/$repo
     cd $repo
     git checkout -b patch-1
+    sleep 1 && clear
 else
     echo '\nAlready you have this directory in your disk and remote'
+    cd ~/Git/fork/$repo
 fi
 
 file="$(sed -E 's#((git|ssh|http(s)?)|(git@[a-zA-Z0-9\.]+))(://)?(([-a-zA-Z0-9\.@\:/~])[^/]+)(/|:)(([-a-zA-Z0-9\_\.])+/){4}##' <<< $url)"
-
-sleep 1 && clear
-echo "$file" && sleep 1
 
 nvim "$file"

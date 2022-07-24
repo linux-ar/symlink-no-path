@@ -1,0 +1,14 @@
+#!/bin/bash
+
+file=${1-}
+
+if [[ ! -z $file ]];then
+    which=$(command -v $file)
+    if [[ ! -z $which ]];then
+        nvim $which
+    else
+        echo -e "\n$file not found in the PATH\n"
+    fi
+else
+    echo -e '\nEdit scipt/file in the PATH\n'
+fi
