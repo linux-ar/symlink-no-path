@@ -3,16 +3,15 @@
 f(){
     # sleep 5
     ip link set wlp3s0 down
-    pkill iwd
     ip link set wlp3s0 up
+    pkill iwd
     iwctl station wlp3s0 scan
     sv restart chronyd
+    sv restart dhcpcd
 }
-g(){
-    f >/dev/null 2>&1
-}
-g &!
-sleep 1
+
+f >/dev/null 2>&1
+
 # iwctl station wlp3s0 disconnect
 #
 # a="jj"
