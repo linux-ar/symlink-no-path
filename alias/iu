@@ -1,8 +1,11 @@
 #!/bin/bash
 
+pkg=${1-}
 
-if (( $# >= 1 ));then
-    echo -e '\nupdate full system \n\n\t$ xbps-install -Su\n\t$ iu'
+if [[ -z $pkg ]];then
+    echo -e '\n\tupdate pkg \n\t\t$ xbps-install -Su pkg\n\t\t$ iu pkg\n\tupdate full system\n\t\t$ iu linux\n'
+elif [[ $pkg == "linux" ]];then
+	xbps-install -Su
 else
-	xbps-install -Su 
+	xbps-install -Su $@
 fi
